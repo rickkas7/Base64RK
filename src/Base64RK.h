@@ -122,6 +122,28 @@ public:
 	 */
 	static size_t getMaxDecodedSize(size_t srcLen);
 
+	/**
+	 * @brief Get the size(in bytes) of the decoded data, given Base64 encoded String srcString
+	 *  
+	 * This is ((srcLen + 3) / 4) * 3 - padding count. This will return an accurate number of bytes 
+	 * for the decodded data.
+	 * 
+	 * @param srcString Base64 encoded string
+	 * @return size_t size(in bytes) of decoded data
+	 */
+	static size_t getDecodedSize(String srcString);
+
+	/**
+	 * @brief Get the size(in bytes) of the decoded data, given Base64 encoded byte array src
+	 *  
+	 * This is ((srcLen + 3) / 4) * 3 - padding count. This will return an accurate number of bytes 
+	 * for the decodded data.
+	 * 
+	 * @param src Base64 encoded bytes
+	 * @return size_t size(in bytes) of decoded data
+	 */
+	static size_t getDecodedSize(const char *src);
+
 private:
 	static const char *encodeTable;
 	static const uint8_t decodeTable[];
