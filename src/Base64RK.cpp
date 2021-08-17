@@ -177,3 +177,17 @@ size_t Base64::getMaxDecodedSize(size_t srcLen) {
 
 	return numQuads * 3;
 }
+
+// [static]
+size_t Base64::getDecodedSize(String srcString) {
+	size_t srcLen = srcString.length();
+	size_t paddingCount = (size_t)(srcString.charAt(srcLen - 1) == '=') + (srcString.charAt(srcLen - 2) == '=');
+	size_t numQuads = srcString.length() / 4;
+
+	return (numQuads* 3) - paddingCount;
+}
+
+// [static]
+size_t Base64::getDecodedSize(const char *src) {
+	return getDecodedSize(String(src));
+}
