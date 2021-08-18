@@ -86,7 +86,16 @@ void runTests() {
 
 		bool success = Base64::encode(testEntries[testNum].data, testEntries[testNum].dataLen, encoded, encodedLen, true);
 		if (success) {
-			if (strcmp(encoded, testEntries[testNum].enc) == 0) {
+			if (strcmp(encoded, testEntries[testNum].enc) == 0) {				
+				// Test getDecodedSize
+				size_t preciseDecodedLen = Base64::getDecodedSize(testEntries[testNum].enc);
+				if (preciseDecodedLen == testEntries[testNum].dataLen) {
+
+				}
+				else {
+					DEBUG_PRINT("test %lu decode length mismatch got %lu expected %lu\n", testNum, preciseDecodedLen, testEntries[testNum].dataLen);
+				}
+
 				// Successfully encoded
 				size_t srcLen = strlen(encoded);
 
