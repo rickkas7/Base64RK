@@ -1,0 +1,38 @@
+\doxysection{Base64\+RK.\+h}
+\hypertarget{_base64_r_k_8h_source}{}\label{_base64_r_k_8h_source}\index{src/Base64RK.h@{src/Base64RK.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_BASE64RK\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_BASE64RK\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}Particle.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_base64}{Base64}}\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_base64_a0e2822a2558d5474a346af4a4adb7aff}{encode}}(\textcolor{keyword}{const}\ uint8\_t\ *src,\ \textcolor{keywordtype}{size\_t}\ srcLen,\ \textcolor{keywordtype}{char}\ *dst,\ \textcolor{keywordtype}{size\_t}\ \&dstLen,\ \textcolor{keywordtype}{bool}\ nullTerminate,\ \textcolor{keywordtype}{int}\ lineBreakAt\ =\ -\/1);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{class_base64_ac9b2b10625108b392aa5cda14ce83ae4}{getEncodedSize}}(\textcolor{keywordtype}{size\_t}\ srcLen,\ \textcolor{keywordtype}{bool}\ nullTerminate,\ \textcolor{keywordtype}{int}\ lineBreakAt\ =\ -\/1);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{static}\ String\ \mbox{\hyperlink{class_base64_aa4d9f75dc46caa8144b68613f3f80110}{encodeToString}}(\textcolor{keyword}{const}\ uint8\_t\ *src,\ \textcolor{keywordtype}{size\_t}\ srcLen,\ \textcolor{keywordtype}{int}\ lineBreakAt\ =\ -\/1);}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_base64_aa4d9f75dc46caa8144b68613f3f80110}{encodeToString}}(\textcolor{keyword}{const}\ uint8\_t\ *src,\ \textcolor{keywordtype}{size\_t}\ srcLen,\ String\ \&output,\ \textcolor{keywordtype}{int}\ lineBreakAt\ =\ -\/1);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_base64_a955cce1a2f897d8a00ef7bc423a06a10}{decode}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *src,\ uint8\_t\ *dst,\ \textcolor{keywordtype}{size\_t}\ \&dstLen);}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_base64_a955cce1a2f897d8a00ef7bc423a06a10}{decode}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *src,\ \textcolor{keywordtype}{size\_t}\ srcLen,\ uint8\_t\ *dst,\ \textcolor{keywordtype}{size\_t}\ \&dstLen);}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{class_base64_a32d82e0e4ff61766ae47baa64b37ca01}{getMaxDecodedSize}}(\textcolor{keywordtype}{size\_t}\ srcLen);}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *encodeTable;}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint8\_t\ decodeTable[];}
+\DoxyCodeLine{00149\ \};}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ \_\_BASE64RK\_H\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00154\ }
+
+\end{DoxyCode}

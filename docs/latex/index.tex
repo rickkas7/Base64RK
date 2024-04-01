@@ -1,0 +1,283 @@
+\chapter{Base64\+RK -\/ Base64 Encoder/\+Decoder for Particle}
+\hypertarget{index}{}\label{index}\index{Base64RK -\/ Base64 Encoder/Decoder for Particle@{Base64RK -\/ Base64 Encoder/Decoder for Particle}}
+\label{index_md__r_e_a_d_m_e}%
+\Hypertarget{index_md__r_e_a_d_m_e}%
+ Useful for transmitting binary data in places where only text strings are allowed. On the Particle platform, functions, publish, and subscribe need encoding of binary data.
+
+
+\begin{DoxyItemize}
+\item \href{https://en.wikipedia.org/wiki/Base64}{\texttt{ https\+://en.\+wikipedia.\+org/wiki/\+Base64}}
+\item \href{https://tools.ietf.org/html/rfc4648}{\texttt{ https\+://tools.\+ietf.\+org/html/rfc4648}}
+\end{DoxyItemize}
+
+\doxysection*{API}
+
+\doxysubsection*{encode}
+
+Encode binary data to \doxylink{class_base64}{Base64}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{static\ bool\ encode(const\ uint8\_t\ *src,\ size\_t\ srcLen,\ char\ *dst,\ size\_t\ \&dstLen,\ bool\ nullTerminate,\ int\ lineBreakAt\ =\ -\/1);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item src Pointer to the binary data to encode.
+\item src\+Len Length of the binary data to encode in bytes.
+\item dst Pointer to the buffer to hold the character string. See get\+Encoded\+Size() for information on how large of a buffer you need.
+\item dst\+Len On input, the length of the buffer pointed to by dst. On successful return, the number of bytes of text data.
+\item null\+Terminate true to add a null terminator, false to not. Note that the length in dst\+Len does NOT include the null terminator if included.
+\item line\+Break\+At Pass -\/1 to not add line breaks, or the column to add line breaks, which must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add line breaks.
+\item Returns true on success or false on failure (buffer too small, for example)
+\end{DoxyItemize}
+
+This method does not break the data into lines. The intended use case of this is things like Particle.\+publish and the line breaks are not helpful and just use up extra bytes.
+
+This method does not allocate memory. It is MT safe.
+
+\DoxyHorRuler{0}
+
+
+\doxysubsection*{get\+Encoded\+Size}
+
+Determine the buffer size for the encoded \doxylink{class_base64}{Base64} data
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{static\ size\_t\ getEncodedSize(size\_t\ srcLen,\ bool\ nullTerminate,\ int\ lineBreakAt\ =\ -\/1);}
+
+\end{DoxyCode}
+
+\begin{DoxyItemize}
+\item src\+Len The size of the data in bytes
+\item null\+Terminate true if you will be adding a null terminator or false if not
+\item line\+Break\+At Pass -\/1 to not add line breaks, or the column to add line breaks, which must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add line breaks.
+\end{DoxyItemize}
+
+The size is (src\+Len + 2) / 3 \texorpdfstring{$\ast$}{*} 4.
+
+This method does not allocate memory. It is MT safe.
+
+\DoxyHorRuler{0}
+
+
+\doxysubsection*{encode\+To\+String}
+
+Encode binary data and return it as a String object.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{static\ String\ encodeToString(const\ uint8\_t\ *src,\ size\_t\ srcLen,\ int\ lineBreakAt\ =\ -\/1);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item src Pointer to the binary data to encode.
+\item src\+Len Length of the binary data to encode in bytes.
+\item line\+Break\+At Pass -\/1 to not add line breaks, or the column to add line breaks, which must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add line breaks.
+\item Returns A String object containing \doxylink{class_base64}{Base64} data
+\end{DoxyItemize}
+
+This method does not break the data into lines. The intended use case of this is things like Particle.\+publish and the line breaks are not helpful and just use up extra bytes.
+
+This is relatively efficient (the buffer is only allocated once using reserve) but using the other encode() method does not require a memory allocation and is more efficient.
+
+This method is MT safe.
+
+\DoxyHorRuler{0}
+ \doxysubsection*{encode\+To\+String}
+
+Encode binary data and store the data in a String object.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{static\ void\ encodeToString(const\ uint8\_t\ *src,\ size\_t\ srcLen,\ String\ \&output);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item src Pointer to the binary data to encode.
+\item src\+Len Length of the binary data to encode in bytes.
+\item output Filled in with the \doxylink{class_base64}{Base64} encoded data
+\end{DoxyItemize}
+
+This method does not break the data into lines. The intended use case of this is things like Particle.\+publish and the line breaks are not helpful and just use up extra bytes.
+
+This is relatively efficient (the buffer is only allocated once using reserve) but using the other encode() method does not require a memory allocation and is more efficient.
+
+This method is MT safe. Added in version 0.\+0.\+2.
+
+\DoxyHorRuler{0}
+
+
+\doxysubsection*{decode (c-\/string)}
+
+Decode \doxylink{class_base64}{Base64} encoded data back to binary data from a c-\/string
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{static\ bool\ decode(const\ char\ *src,\ uint8\_t\ *dst,\ size\_t\ \&dstLen);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item src Pointer to the source string. You can directly pass a String object if desired.
+\item dst Pointer to a buffer to store te binary data in
+\item dst\+Len On input, the size of the buffer pointed to by dst. On successful return, the number of actual bytes.
+\item Returns true on a successful decode or false on error (invalid input or dst\+Len too small)
+\end{DoxyItemize}
+
+The input src must not contain line breaks (CRLF). The intended use case of this is things like Particle.\+publish and the line breaks are not helpful and just use up extra bytes.
+
+This method does not allocate memory. It is MT safe.
+
+\DoxyHorRuler{0}
+
+
+\doxysubsection*{decode (buffer and length)}
+
+Decode \doxylink{class_base64}{Base64} encoded data back to binary data from a buffer and length
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{static\ bool\ decode(const\ char\ *src,\ size\_t\ srcLen,\ uint8\_t\ *dst,\ size\_t\ \&dstLen);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item src Pointer to the source string. It does not need to be null terminated.
+\item src\+Len The length of the source string in bytes
+\item dst Pointer to a buffer to store te binary data in
+\item dst\+Len On input, the size of the buffer pointed to by dst. On successful return, the number of actual bytes.
+\item Returns true on a successful decode or false on error (invalid input or dst\+Len too small)
+\end{DoxyItemize}
+
+The input src must not contain line breaks (CRLF). The intended use case of this is things like Particle.\+publish and the line breaks are not helpful and just use up extra bytes.
+
+This method does not allocate memory. It is MT safe.
+
+\DoxyHorRuler{0}
+
+
+\doxysubsection*{get\+Max\+Decoded\+Size}
+
+Get the maximum size of the decoded data, given \doxylink{class_base64}{Base64} encoded string of src\+Len
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{static\ size\_t\ getMaxDecodedSize(size\_t\ srcLen);}
+
+\end{DoxyCode}
+
+
+This is ((src\+Len + 3) / 4) \texorpdfstring{$\ast$}{*} 3. The actual data may be smaller than this if it\textquotesingle{}s not a multiple of 3 bytes and padding is inserted. The actual length will be returned in dst\+Len for decode.
+
+This method does not allocate memory. It is MT safe.
+
+\doxysection*{Examples}
+
+\doxysubsection*{examples/1-\/tester-\/\+Base64}
+
+This example uses Particle functions and publish to test the various methods.
+
+For example, given the code running on device test2\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{particle\ call\ test2\ text\ "{}hello\ world"{}}
+
+\end{DoxyCode}
+
+
+The following will appear on debug serial and published\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{text-\/>base64\ aGVsbG8gd29ybGQ=}
+
+\end{DoxyCode}
+
+
+You can then decode this to hex\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{particle\ call\ test2\ base64\ aGVsbG8gd29ybGQ=}
+
+\end{DoxyCode}
+
+
+which generates\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{base64-\/>hex\ 68656c6c6f20776f726c64}
+
+\end{DoxyCode}
+
+
+You can also convert hex back to base64\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{particle\ call\ test2\ hex\ "{}68656c6c6f20776f726c64"{}}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{hex-\/>base64\ aGVsbG8gd29ybGQ=}
+
+\end{DoxyCode}
+
+
+\doxysubsection*{examples/2-\/unittest-\/\+Base64}
+
+This example runs pre-\/generated sample data through the parser and decoder to make sure they work properly.
+
+\doxysection*{Test Code}
+
+There is also code in the test directory, for off-\/device testing.
+
+\doxysubsection*{generate-\/test-\/data}
+
+This is the node.\+js tool that generated the test data used in the unit tests (both on-\/device and off-\/device).
+
+\doxysubsection*{unit-\/test}
+
+The unit-\/test is designed to run on a standard gcc environment, such as Mac or Linux, or cygwin. It encodes and decodes a variety of data samples and makes sure they match the expected data.
+
+Data from size 0 to 16 bytes is tested, as well as other sizes up to 512 bytes, to make sure a variety of padding circumstances are tested, as well as a large number of bit combinations.
+
+Particularly useful is running under Linux with \href{http://valgrind.org/}{\texttt{ valgrind}} installed. The {\ttfamily make check} target runs the unit-\/test program under valgrind. The tool detects common memory errors including if the code\+:
+
+
+\begin{DoxyItemize}
+\item Accesses memory it shouldn\textquotesingle{}t (areas not yet allocated, areas that have been freed, areas past the end of heap blocks, inaccessible areas of the stack).
+\item Uses uninitialized values in dangerous ways.
+\item Leaks memory.
+\item Does bad frees of heap blocks (double frees, mismatched frees).
+\item Passes overlapping source and destination memory blocks to memcpy() and related functions.
+\end{DoxyItemize}
+
+\doxysection*{Version history}
+
+\doxysubsection*{0.\+0.\+2 (2024-\/03-\/29)}
+
+
+\begin{DoxyItemize}
+\item Added an encode\+To\+String overload that encodes to a String object instead of returning it.
+\item Added support for adding line breaks when decoding and supporting them when decoding. 
+\end{DoxyItemize}

@@ -30,14 +30,15 @@ public:
 	 * @param nullTerminate true to add a null terminator, false to not. Note that the length in dstLen
 	 * does NOT include the null terminator if included.
 	 *
+	 * @param lineBreakAt -1 to not add line breaks, or the column to add line breaks, which
+	 * must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add
+	 * line breaks.
+	 * 
 	 * @return true on success or false on failure (buffer too small, for example)
-	 *
-	 * This method does not break the data into lines. The intended use case of this is things like
-	 * Particle.publish and the line breaks are not helpful and just use up extra bytes.
 	 *
 	 * This method does not allocate memory. It is MT safe.
 	 */
-	static bool encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen, bool nullTerminate);
+	static bool encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen, bool nullTerminate, int lineBreakAt = -1);
 
 	/**
 	 * @brief Determine the buffer size for the encoded Base64 data
@@ -46,11 +47,15 @@ public:
 	 *
 	 * @param nullTerminate true if you will be adding a null terminator or false if not
 	 *
-	 * The size is (srcLen + 2) / 3 * 4.
+	 * @param lineBreakAt -1 to not add line breaks, or the column to add line breaks, which
+	 * must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add
+	 * line breaks.
+	 * 
+	 * The size is (srcLen + 2) / 3 * 4 plus line breaks if requested.
 	 *
 	 * This method does not allocate memory. It is MT safe.
 	 */
-	static size_t getEncodedSize(size_t srcLen, bool nullTerminate);
+	static size_t getEncodedSize(size_t srcLen, bool nullTerminate, int lineBreakAt = -1);
 
 	/**
 	 * @brief Encode binary data and return it as a String object.
@@ -58,18 +63,40 @@ public:
 	 * @param src Pointer to the binary data to encode.
 	 *
 	 * @param srcLen Length of the binary data to encode in bytes.
+	 * 
+	 * @param lineBreakAt -1 to not add line breaks, or the column to add line breaks, which
+	 * must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add
+	 * line breaks.
 	 *
 	 * @return A String object containing Base64 data
-	 *
-	 * This method does not break the data into lines. The intended use case of this is things like
-	 * Particle.publish and the line breaks are not helpful and just use up extra bytes.
 	 *
 	 * This is relatively efficient (the buffer is only allocated once using reserve) but using
 	 * the other encode() method does not require a memory allocation and is more efficient.
 	 *
 	 * This method is MT safe.
 	 */
-	static String encodeToString(const uint8_t *src, size_t srcLen);
+	static String encodeToString(const uint8_t *src, size_t srcLen, int lineBreakAt = -1);
+
+	/**
+	 * @brief Encode binary data and store it as a String object.
+	 *
+	 * @param src Pointer to the binary data to encode.
+	 *
+	 * @param srcLen Length of the binary data to encode in bytes.
+	 *
+	 * @param output Filled in with the Base64 representation of the data. Is emptied before using.
+	 *
+	 * @param lineBreakAt -1 to not add line breaks, or the column to add line breaks, which
+	 * must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add
+	 * line breaks.
+	 *
+	 * This is relatively efficient (the buffer is only allocated once using reserve) but using
+	 * the other encode() method does not require a memory allocation and is more efficient.
+	 *
+	 * This method is MT safe.
+	 */
+	static void encodeToString(const uint8_t *src, size_t srcLen, String &output, int lineBreakAt = -1);
+
 
 	/**
 	 * @brief Decode Base64 encoded data back to binary data from a c-string
@@ -82,9 +109,6 @@ public:
 	 * number of actual bytes.
 	 *
 	 * @return true on a successful decode or false on error (invalid input or dstLen too small)
-	 *
-	 * The input src must not contain line breaks (CRLF). The intended use case of this is things like
-	 * Particle.publish and the line breaks are not helpful and just use up extra bytes.
 	 *
 	 * This method does not allocate memory. It is MT safe.
 	 */
@@ -104,9 +128,6 @@ public:
 	 * number of actual bytes.
 	 *
 	 * @return true on a successful decode or false on error (invalid input or dstLen too small)
-	 *
-	 * The input src must not contain line breaks (CRLF). The intended use case of this is things like
-	 * Particle.publish and the line breaks are not helpful and just use up extra bytes.
 	 *
 	 * This method does not allocate memory. It is MT safe.
 	 */

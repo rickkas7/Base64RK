@@ -13,7 +13,7 @@ Useful for transmitting binary data in places where only text strings are allowe
 Encode binary data to Base64
 
 ```
-static bool encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen, bool nullTerminate);
+static bool encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen, bool nullTerminate, int lineBreakAt = -1);
 ```
 
 - src Pointer to the binary data to encode.
@@ -29,6 +29,10 @@ the number of bytes of text data.
 - nullTerminate true to add a null terminator, false to not. Note that the length in dstLen
 does NOT include the null terminator if included.
 
+- lineBreakAt Pass -1 to not add line breaks, or the column to add line breaks, which
+must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add
+line breaks.
+
 - Returns true on success or false on failure (buffer too small, for example)
 
 This method does not break the data into lines. The intended use case of this is things like
@@ -43,11 +47,15 @@ This method does not allocate memory. It is MT safe.
 Determine the buffer size for the encoded Base64 data
 
 ```
-static size_t getEncodedSize(size_t srcLen, bool nullTerminate);
+static size_t getEncodedSize(size_t srcLen, bool nullTerminate, int lineBreakAt = -1);
 ```
 - srcLen The size of the data in bytes
 
 - nullTerminate true if you will be adding a null terminator or false if not
+
+- lineBreakAt Pass -1 to not add line breaks, or the column to add line breaks, which
+must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add
+line breaks.
 
 The size is (srcLen + 2) / 3 * 4.
 
@@ -60,12 +68,16 @@ This method does not allocate memory. It is MT safe.
 Encode binary data and return it as a String object.
 
 ```
-static String encodeToString(const uint8_t *src, size_t srcLen);
+static String encodeToString(const uint8_t *src, size_t srcLen, int lineBreakAt = -1);
 ```
 
 - src Pointer to the binary data to encode.
 
 - srcLen Length of the binary data to encode in bytes.
+
+- lineBreakAt Pass -1 to not add line breaks, or the column to add line breaks, which
+must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add
+line breaks.
 
 - Returns A String object containing Base64 data
 
@@ -78,6 +90,30 @@ the other encode() method does not require a memory allocation and is more effic
 This method is MT safe.
 	 
 --
+### encodeToString
+
+Encode binary data and store the data in a String object.
+
+```
+static void encodeToString(const uint8_t *src, size_t srcLen, String &output);
+```
+
+- src Pointer to the binary data to encode.
+
+- srcLen Length of the binary data to encode in bytes.
+
+- output Filled in with the Base64 encoded data
+
+This method does not break the data into lines. The intended use case of this is things like
+Particle.publish and the line breaks are not helpful and just use up extra bytes.
+
+This is relatively efficient (the buffer is only allocated once using reserve) but using
+the other encode() method does not require a memory allocation and is more efficient.
+
+This method is MT safe. Added in version 0.0.2.
+	 
+--
+
 
 ### decode (c-string)
 
@@ -213,4 +249,9 @@ Particularly useful is running under Linux with [valgrind](http://valgrind.org/)
 
 
 
- 
+## Version history
+
+### 0.0.2 (2024-03-29)
+
+- Added an encodeToString overload that encodes to a String object instead of returning it.
+- Added support for adding line breaks when decoding and supporting them when decoding.

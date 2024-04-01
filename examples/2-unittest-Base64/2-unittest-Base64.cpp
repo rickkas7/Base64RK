@@ -49,6 +49,15 @@ const char *enc19 = "ZSsh3WyA3d00CyimeMZPAI1/t+LF6DQdiAEQG9hHlfuDXhZ2Gf/Wd1u2y+R
 const uint8_t data20[] = {177, 224, 149, 210, 54, 194, 123, 141, 157, 224, 99, 1, 189, 114, 37, 230, 250, 149, 161, 158, 138, 226, 5, 18, 131, 169, 202, 130, 46, 109, 102, 35, 113, 199, 109, 178, 98, 137, 249, 69, 227, 130, 232, 246, 105, 101, 97, 234, 120, 151, 31, 41, 90, 20, 15, 246, 90, 214, 39, 139, 86, 52, 78, 174, 35, 95, 63, 226, 241, 127, 164, 219, 174, 140, 255, 17, 120, 118, 97, 131, 133, 35, 231, 117, 215, 74, 14, 110, 70, 42, 110, 7, 37, 234, 139, 210, 224, 36, 71, 227, 68, 155, 236, 191, 61, 83, 11, 189, 88, 60, 208, 3, 109, 121, 32, 71, 169, 58, 125, 112, 116, 16, 153, 200, 74, 242, 89, 141, 143, 25, 211, 92, 179, 227, 223, 183, 219, 18, 54, 208, 80, 253, 11, 76, 69, 150, 4, 48, 238, 73, 165, 25, 133, 200, 80, 207, 84, 182, 64, 251, 156, 76, 255, 112, 227, 235, 154, 29, 191, 86, 217, 118, 219, 51, 38, 173, 6, 111, 14, 55, 195, 13, 45, 236, 66, 180, 39, 109, 110, 7, 47, 61, 103, 100, 117, 55, 89, 35, 64, 106, 106, 42, 238, 37, 70, 20, 8, 128, 34, 131, 56, 120, 103, 125, 149, 182, 130, 217, 38, 102, 24, 170, 111, 47, 113, 79, 142, 4, 167, 80, 12, 174, 102, 74, 129, 109, 204, 12, 252, 200, 95, 97, 51, 215, 169, 148, 191, 113, 155, 228, 145, 235, 35, 252, 53, 177};
 const char *enc20 = "seCV0jbCe42d4GMBvXIl5vqVoZ6K4gUSg6nKgi5tZiNxx22yYon5ReOC6PZpZWHqeJcfKVoUD/Za1ieLVjROriNfP+Lxf6Tbroz/EXh2YYOFI+d110oObkYqbgcl6ovS4CRH40Sb7L89Uwu9WDzQA215IEepOn1wdBCZyEryWY2PGdNcs+Pft9sSNtBQ/QtMRZYEMO5JpRmFyFDPVLZA+5xM/3Dj65odv1bZdtszJq0Gbw43ww0t7EK0J21uBy89Z2R1N1kjQGpqKu4lRhQIgCKDOHhnfZW2gtkmZhiqby9xT44Ep1AMrmZKgW3MDPzIX2Ez16mUv3Gb5JHrI/w1sQ==";
 
+//                      0        1         2         3         4         5         6         7         8
+//                      12345678901234567890123456789012345678901234567890123456789012345678901234567890
+const char *enc20_72 = "seCV0jbCe42d4GMBvXIl5vqVoZ6K4gUSg6nKgi5tZiNxx22yYon5ReOC6PZpZWHqeJcfKVoU\n"
+                       "D/Za1ieLVjROriNfP+Lxf6Tbroz/EXh2YYOFI+d110oObkYqbgcl6ovS4CRH40Sb7L89Uwu9\n"
+					   "WDzQA215IEepOn1wdBCZyEryWY2PGdNcs+Pft9sSNtBQ/QtMRZYEMO5JpRmFyFDPVLZA+5xM\n"
+					   "/3Dj65odv1bZdtszJq0Gbw43ww0t7EK0J21uBy89Z2R1N1kjQGpqKu4lRhQIgCKDOHhnfZW2\n"
+					   "gtkmZhiqby9xT44Ep1AMrmZKgW3MDPzIX2Ez16mUv3Gb5JHrI/w1sQ==\n";
+
+
 
 TestEntry testEntries[] = {
 	{ data1, 0, enc1},
@@ -176,19 +185,56 @@ void runTests() {
 			delete[] encoded;
 		}
 
-		// Test encode to string
-		String encodedStr = Base64::encodeToString(testEntries[testNum].data, testEntries[testNum].dataLen);
-		if (encodedStr.length() == (int)strlen(testEntries[testNum].enc)) {
-			if (strcmp(encodedStr, testEntries[testNum].enc) == 0) {
+		{
+			// Test encode to string
+			String encodedStr = "testing!";
+
+			Base64::encodeToString(testEntries[testNum].data, testEntries[testNum].dataLen, encodedStr);
+			if (encodedStr.length() == (int)strlen(testEntries[testNum].enc)) {
+				if (strcmp(encodedStr, testEntries[testNum].enc) == 0) {
+				}
+				else {
+					DEBUG_PRINT("test %lu encoded data did not match (string)\n", testNum);
+				}
 			}
 			else {
-				DEBUG_PRINT("test %lu encoded data did not match (string)\n", testNum);
+				DEBUG_PRINT("test %lu encoded length did not match (string)\n", testNum);
 			}
+
+		}
+		
+	}
+
+	{
+		// Test line breaks
+		String encodedStr;
+
+		Base64::encodeToString(testEntries[20].data, testEntries[20].dataLen, encodedStr, 72);
+
+		if (encodedStr == enc20_72) {
 		}
 		else {
-			DEBUG_PRINT("test %lu encoded length did not match (string)\n", testNum);
+			DEBUG_PRINT("test line breaks did not match\n");
+		}
+
+		size_t tempBufSize = Base64::getMaxDecodedSize(strlen(enc20_72));
+
+		uint8_t *tempBuffer = new uint8_t[tempBufSize];
+		if (tempBuffer) {
+			Base64::decode(enc20_72, tempBuffer, tempBufSize);
+			if (tempBufSize == testEntries[20].dataLen && memcmp(tempBuffer, testEntries[20].data, tempBufSize) == 0) {
+
+			}
+			else {
+				DEBUG_PRINT("test line breaks did not decode correctly\n");			
+			}
+
+			delete[] tempBuffer;
 		}
 	}
+
+
+
 }
 
 void setup() {

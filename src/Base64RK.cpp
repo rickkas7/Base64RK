@@ -16,7 +16,7 @@ const uint8_t Base64::decodeTable[96] = {
 };
 
 // [static]
-bool Base64::encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen, bool nullTerminate) {
+bool Base64::encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen, bool nullTerminate, int lineBreakAt) {
 
 	if (dstLen < getEncodedSize(srcLen, nullTerminate)) {
 		return false;
@@ -24,12 +24,18 @@ bool Base64::encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen
 
 	size_t ii = 0;
 	char *p = dst;
+	char *lineStart = p;
+
 	if (srcLen >= 3) {
 		for (ii = 0; ii < srcLen - 2; ii += 3) {
 			*p++ = encodeTable[(src[ii] >> 2) & 0x3F];
 			*p++ = encodeTable[((src[ii] & 0x3) << 4) | ((src[ii + 1] & 0xF0) >> 4)];
 			*p++ = encodeTable[((src[ii + 1] & 0xF) << 2) | ((src[ii + 2] & 0xC0) >> 6)];
 			*p++ = encodeTable[src[ii + 2] & 0x3F];
+			if ((lineBreakAt > 0) && ((p - lineStart) >= lineBreakAt)) {
+				*p++ = '\n';
+				lineStart = p;
+			}
 		}
 	}
 
@@ -46,6 +52,10 @@ bool Base64::encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen
 		*p++ = '=';
 	}
 
+	if (lineBreakAt > 0 && p > lineStart) {
+		*p++ = '\n';
+	}
+
 	if (nullTerminate) {
 		*p = 0;
 	}
@@ -56,7 +66,7 @@ bool Base64::encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen
 }
 
 // [static]
-size_t Base64::getEncodedSize(size_t srcLen, bool nullTerminate) {
+size_t Base64::getEncodedSize(size_t srcLen, bool nullTerminate, int lineBreakAt) {
 	size_t size;
 
 	if (srcLen > 0) {
@@ -73,22 +83,44 @@ size_t Base64::getEncodedSize(size_t srcLen, bool nullTerminate) {
 		size++;
 	}
 
+	if (lineBreakAt > 0) {
+		size += (size + (size_t) lineBreakAt - 1) / lineBreakAt;
+	}
+
 	return size;
 }
 
 // [static]
-String Base64::encodeToString(const uint8_t *src, size_t srcLen) {
+String Base64::encodeToString(const uint8_t *src, size_t srcLen, int lineBreakAt) {
 	String result;
 
+	encodeToString(src, srcLen, result, lineBreakAt);
+
+	return result;
+}
+
+// [static]
+void Base64::encodeToString(const uint8_t *src, size_t srcLen, String &result, int lineBreakAt) {
+
+	result = "";
 	result.reserve(getEncodedSize(srcLen, true));
 
 	size_t ii = 0;
+	size_t lineStart = 0;
+
 	if (srcLen >= 3) {
+
 		for (ii = 0; ii < srcLen - 2; ii += 3) {
 			result.concat(encodeTable[(src[ii] >> 2) & 0x3f]);
 			result.concat(encodeTable[((src[ii] & 0x3) << 4) | ((src[ii + 1] & 0xf0) >> 4)]);
 			result.concat(encodeTable[((src[ii + 1] & 0xf) << 2) | ((src[ii + 2] & 0xc0) >> 6)]);
 			result.concat(encodeTable[src[ii + 2] & 0x3f]);
+
+			if ((lineBreakAt > 0) && ((result.length() - lineStart) >= lineBreakAt)) {
+				result.concat('\n');
+				lineStart = result.length();
+			}
+
 		}
 	}
 
@@ -104,8 +136,10 @@ String Base64::encodeToString(const uint8_t *src, size_t srcLen) {
 		}
 		result.concat('=');
 	}
+	if (lineBreakAt > 0 && lineStart < result.length()) {
+		result.concat('\n');
+	}
 
-	return result;
 }
 
 // [static]
@@ -124,6 +158,7 @@ bool Base64::decode(const char *src, size_t srcLen, uint8_t *dst, size_t &dstLen
 			srcLen = ii;
 			break;
 		}
+
 		// src is signed char, so high-bit set values will be negative and caught by the < 0x20 test
 		if (src[ii] < 0x20 || decodeTable[src[ii] - 0x20] == 64) {
 			return false;
@@ -141,6 +176,11 @@ bool Base64::decode(const char *src, size_t srcLen, uint8_t *dst, size_t &dstLen
 	uint8_t *dstEnd = &dst[dstLen];
 
 	while (srcLeft > 4) {
+		while (*src == '\n' || *src == '\r') {
+			src++;
+			srcLeft--;
+		}
+
 		*dstCur++ = (uint8_t) (decodeTable[*src - 0x20] << 2 | decodeTable[src[1] - 0x20] >> 4);
 		*dstCur++ = (uint8_t) (decodeTable[src[1] - 0x20] << 4 | decodeTable[src[2] - 0x20] >> 2);
 		*dstCur++ = (uint8_t) (decodeTable[src[2] - 0x20] << 6 | decodeTable[src[3] - 0x20]);

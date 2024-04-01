@@ -1,0 +1,198 @@
+\doxysection{Base64 Class Reference}
+\hypertarget{class_base64}{}\label{class_base64}\index{Base64@{Base64}}
+
+
+Class for \doxylink{class_base64}{Base64} encoding and decoding.  
+
+
+
+
+{\ttfamily \#include $<$Base64\+RK.\+h$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{class_base64_a0e2822a2558d5474a346af4a4adb7aff}{encode}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}src, size\+\_\+t src\+Len, char \texorpdfstring{$\ast$}{*}dst, size\+\_\+t \&dst\+Len, bool null\+Terminate, int line\+Break\+At=-\/1)
+\begin{DoxyCompactList}\small\item\em Encode binary data to \doxylink{class_base64}{Base64}. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{class_base64_ac9b2b10625108b392aa5cda14ce83ae4}{get\+Encoded\+Size}} (size\+\_\+t src\+Len, bool null\+Terminate, int line\+Break\+At=-\/1)
+\begin{DoxyCompactList}\small\item\em Determine the buffer size for the encoded \doxylink{class_base64}{Base64} data. \end{DoxyCompactList}\item 
+static String \mbox{\hyperlink{class_base64_aa4d9f75dc46caa8144b68613f3f80110}{encode\+To\+String}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}src, size\+\_\+t src\+Len, int line\+Break\+At=-\/1)
+\begin{DoxyCompactList}\small\item\em Encode binary data and return it as a String object. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{class_base64_adc17542d397b2d5e8076e7608daa5f8d}{encode\+To\+String}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}src, size\+\_\+t src\+Len, String \&output, int line\+Break\+At=-\/1)
+\begin{DoxyCompactList}\small\item\em Encode binary data and store it as a String object. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{class_base64_a955cce1a2f897d8a00ef7bc423a06a10}{decode}} (const char \texorpdfstring{$\ast$}{*}src, uint8\+\_\+t \texorpdfstring{$\ast$}{*}dst, size\+\_\+t \&dst\+Len)
+\begin{DoxyCompactList}\small\item\em Decode \doxylink{class_base64}{Base64} encoded data back to binary data from a c-\/string. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{class_base64_a6b0b92407eb87a5f080ddb183fc95d77}{decode}} (const char \texorpdfstring{$\ast$}{*}src, size\+\_\+t src\+Len, uint8\+\_\+t \texorpdfstring{$\ast$}{*}dst, size\+\_\+t \&dst\+Len)
+\begin{DoxyCompactList}\small\item\em Decode \doxylink{class_base64}{Base64} encoded data back to binary data from a buffer and length. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{class_base64_a32d82e0e4ff61766ae47baa64b37ca01}{get\+Max\+Decoded\+Size}} (size\+\_\+t src\+Len)
+\begin{DoxyCompactList}\small\item\em Get the maximum size of the decoded data, given \doxylink{class_base64}{Base64} encoded string of src\+Len. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class for \doxylink{class_base64}{Base64} encoding and decoding. 
+
+Useful for transmitting binary data in places where only text strings are allowed. On the Particle platform, functions, publish, and subscribe need encoding of binary data.
+
+\href{https://en.wikipedia.org/wiki/Base64}{\texttt{ https\+://en.\+wikipedia.\+org/wiki/\+Base64}} \href{https://tools.ietf.org/html/rfc4648}{\texttt{ https\+://tools.\+ietf.\+org/html/rfc4648}} 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_base64_a6b0b92407eb87a5f080ddb183fc95d77}\label{class_base64_a6b0b92407eb87a5f080ddb183fc95d77} 
+\index{Base64@{Base64}!decode@{decode}}
+\index{decode@{decode}!Base64@{Base64}}
+\doxysubsubsection{\texorpdfstring{decode()}{decode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool Base64\+::decode (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{src,  }\item[{size\+\_\+t}]{src\+Len,  }\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{dst,  }\item[{size\+\_\+t \&}]{dst\+Len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Decode \doxylink{class_base64}{Base64} encoded data back to binary data from a buffer and length. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Pointer to the source string. It does not need to be null terminated.\\
+\hline
+{\em src\+Len} & The length of the source string in bytes\\
+\hline
+{\em dst} & Pointer to a buffer to store te binary data in\\
+\hline
+{\em dst\+Len} & On input, the size of the buffer pointed to by dst. On successful return, the number of actual bytes.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true on a successful decode or false on error (invalid input or dst\+Len too small)
+\end{DoxyReturn}
+This method does not allocate memory. It is MT safe. \Hypertarget{class_base64_a955cce1a2f897d8a00ef7bc423a06a10}\label{class_base64_a955cce1a2f897d8a00ef7bc423a06a10} 
+\index{Base64@{Base64}!decode@{decode}}
+\index{decode@{decode}!Base64@{Base64}}
+\doxysubsubsection{\texorpdfstring{decode()}{decode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Base64\+::decode (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{src,  }\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{dst,  }\item[{size\+\_\+t \&}]{dst\+Len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Decode \doxylink{class_base64}{Base64} encoded data back to binary data from a c-\/string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Pointer to the source string. You can directly pass a String object if desired.\\
+\hline
+{\em dst} & Pointer to a buffer to store te binary data in\\
+\hline
+{\em dst\+Len} & On input, the size of the buffer pointed to by dst. On successful return, the number of actual bytes.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true on a successful decode or false on error (invalid input or dst\+Len too small)
+\end{DoxyReturn}
+This method does not allocate memory. It is MT safe. \Hypertarget{class_base64_a0e2822a2558d5474a346af4a4adb7aff}\label{class_base64_a0e2822a2558d5474a346af4a4adb7aff} 
+\index{Base64@{Base64}!encode@{encode}}
+\index{encode@{encode}!Base64@{Base64}}
+\doxysubsubsection{\texorpdfstring{encode()}{encode()}}
+{\footnotesize\ttfamily bool Base64\+::encode (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{src,  }\item[{size\+\_\+t}]{src\+Len,  }\item[{char \texorpdfstring{$\ast$}{*}}]{dst,  }\item[{size\+\_\+t \&}]{dst\+Len,  }\item[{bool}]{null\+Terminate,  }\item[{int}]{line\+Break\+At = {\ttfamily -\/1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Encode binary data to \doxylink{class_base64}{Base64}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Pointer to the binary data to encode.\\
+\hline
+{\em src\+Len} & Length of the binary data to encode in bytes.\\
+\hline
+{\em dst} & Pointer to the buffer to hold the character string. See \doxylink{class_base64_ac9b2b10625108b392aa5cda14ce83ae4}{get\+Encoded\+Size()} for information on how large of a buffer you need.\\
+\hline
+{\em dst\+Len} & On input, the length of the buffer pointed to by dst. On successful return, the number of bytes of text data.\\
+\hline
+{\em null\+Terminate} & true to add a null terminator, false to not. Note that the length in dst\+Len does NOT include the null terminator if included.\\
+\hline
+{\em line\+Break\+At} & -\/1 to not add line breaks, or the column to add line breaks, which must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add line breaks.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true on success or false on failure (buffer too small, for example)
+\end{DoxyReturn}
+This method does not allocate memory. It is MT safe. \Hypertarget{class_base64_aa4d9f75dc46caa8144b68613f3f80110}\label{class_base64_aa4d9f75dc46caa8144b68613f3f80110} 
+\index{Base64@{Base64}!encodeToString@{encodeToString}}
+\index{encodeToString@{encodeToString}!Base64@{Base64}}
+\doxysubsubsection{\texorpdfstring{encodeToString()}{encodeToString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily String Base64\+::encode\+To\+String (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{src,  }\item[{size\+\_\+t}]{src\+Len,  }\item[{int}]{line\+Break\+At = {\ttfamily -\/1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Encode binary data and return it as a String object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Pointer to the binary data to encode.\\
+\hline
+{\em src\+Len} & Length of the binary data to encode in bytes.\\
+\hline
+{\em line\+Break\+At} & -\/1 to not add line breaks, or the column to add line breaks, which must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add line breaks.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A String object containing \doxylink{class_base64}{Base64} data
+\end{DoxyReturn}
+This is relatively efficient (the buffer is only allocated once using reserve) but using the other \doxylink{class_base64_a0e2822a2558d5474a346af4a4adb7aff}{encode()} method does not require a memory allocation and is more efficient.
+
+This method is MT safe. \Hypertarget{class_base64_adc17542d397b2d5e8076e7608daa5f8d}\label{class_base64_adc17542d397b2d5e8076e7608daa5f8d} 
+\index{Base64@{Base64}!encodeToString@{encodeToString}}
+\index{encodeToString@{encodeToString}!Base64@{Base64}}
+\doxysubsubsection{\texorpdfstring{encodeToString()}{encodeToString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Base64\+::encode\+To\+String (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{src,  }\item[{size\+\_\+t}]{src\+Len,  }\item[{String \&}]{output,  }\item[{int}]{line\+Break\+At = {\ttfamily -\/1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Encode binary data and store it as a String object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Pointer to the binary data to encode.\\
+\hline
+{\em src\+Len} & Length of the binary data to encode in bytes.\\
+\hline
+{\em output} & Filled in with the \doxylink{class_base64}{Base64} representation of the data. Is emptied before using.\\
+\hline
+{\em line\+Break\+At} & -\/1 to not add line breaks, or the column to add line breaks, which must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add line breaks.\\
+\hline
+\end{DoxyParams}
+This is relatively efficient (the buffer is only allocated once using reserve) but using the other \doxylink{class_base64_a0e2822a2558d5474a346af4a4adb7aff}{encode()} method does not require a memory allocation and is more efficient.
+
+This method is MT safe. \Hypertarget{class_base64_ac9b2b10625108b392aa5cda14ce83ae4}\label{class_base64_ac9b2b10625108b392aa5cda14ce83ae4} 
+\index{Base64@{Base64}!getEncodedSize@{getEncodedSize}}
+\index{getEncodedSize@{getEncodedSize}!Base64@{Base64}}
+\doxysubsubsection{\texorpdfstring{getEncodedSize()}{getEncodedSize()}}
+{\footnotesize\ttfamily size\+\_\+t Base64\+::get\+Encoded\+Size (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{src\+Len,  }\item[{bool}]{null\+Terminate,  }\item[{int}]{line\+Break\+At = {\ttfamily -\/1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Determine the buffer size for the encoded \doxylink{class_base64}{Base64} data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src\+Len} & The size of the data in bytes\\
+\hline
+{\em null\+Terminate} & true if you will be adding a null terminator or false if not\\
+\hline
+{\em line\+Break\+At} & -\/1 to not add line breaks, or the column to add line breaks, which must be a multiple of 4 and is typically 76, sometimes 64. Default is to not add line breaks.\\
+\hline
+\end{DoxyParams}
+The size is (src\+Len + 2) / 3 \texorpdfstring{$\ast$}{*} 4 plus line breaks if requested.
+
+This method does not allocate memory. It is MT safe. \Hypertarget{class_base64_a32d82e0e4ff61766ae47baa64b37ca01}\label{class_base64_a32d82e0e4ff61766ae47baa64b37ca01} 
+\index{Base64@{Base64}!getMaxDecodedSize@{getMaxDecodedSize}}
+\index{getMaxDecodedSize@{getMaxDecodedSize}!Base64@{Base64}}
+\doxysubsubsection{\texorpdfstring{getMaxDecodedSize()}{getMaxDecodedSize()}}
+{\footnotesize\ttfamily size\+\_\+t Base64\+::get\+Max\+Decoded\+Size (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{src\+Len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Get the maximum size of the decoded data, given \doxylink{class_base64}{Base64} encoded string of src\+Len. 
+
+This is ((src\+Len + 3) / 4) \texorpdfstring{$\ast$}{*} 3. The actual data may be smaller than this if it\textquotesingle{}s not a multiple of 3 bytes and padding is inserted. The actual length will be returned in dst\+Len for decode.
+
+This method does not allocate memory. It is MT safe. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/Base64\+RK.\+h\item 
+src/Base64\+RK.\+cpp\end{DoxyCompactItemize}
