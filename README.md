@@ -251,7 +251,7 @@ Particularly useful is running under Linux with [valgrind](http://valgrind.org/)
 
 ## Version history
 
-### 0.0.2 (2024-03-29)
+### 0.0.3 (2024-03-29)
 
 - Added an encodeToString overload that encodes to a String object instead of returning it.
 - Added support for adding line breaks when decoding and supporting them when decoding.

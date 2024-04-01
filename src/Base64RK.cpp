@@ -116,7 +116,7 @@ void Base64::encodeToString(const uint8_t *src, size_t srcLen, String &result, i
 			result.concat(encodeTable[((src[ii + 1] & 0xf) << 2) | ((src[ii + 2] & 0xc0) >> 6)]);
 			result.concat(encodeTable[src[ii + 2] & 0x3f]);
 
-			if ((lineBreakAt > 0) && ((result.length() - lineStart) >= lineBreakAt)) {
+			if ((lineBreakAt > 0) && ((result.length() - lineStart) >= (size_t)lineBreakAt)) {
 				result.concat('\n');
 				lineStart = result.length();
 			}
