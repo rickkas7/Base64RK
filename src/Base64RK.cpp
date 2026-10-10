@@ -159,8 +159,10 @@ bool Base64::decode(const char *src, size_t srcLen, uint8_t *dst, size_t &dstLen
 			break;
 		}
 
-		// src is signed char, so high-bit set values will be negative and caught by the < 0x20 test
-		if (src[ii] < 0x20 || decodeTable[src[ii] - 0x20] == 64) {
+		// char is unsigned on some platforms (including ARM), so compare as uint8_t and reject
+		// high-bit set values explicitly before indexing decodeTable (0x20 - 0x7f)
+		uint8_t c = (uint8_t) src[ii];
+		if (c < 0x20 || c > 0x7f || decodeTable[c - 0x20] == 64) {
 			return false;
 		}
 	}
