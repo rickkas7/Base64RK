@@ -18,7 +18,7 @@ const uint8_t Base64::decodeTable[96] = {
 // [static]
 bool Base64::encode(const uint8_t *src, size_t srcLen, char *dst, size_t &dstLen, bool nullTerminate, int lineBreakAt) {
 
-	if (dstLen < getEncodedSize(srcLen, nullTerminate)) {
+	if (dstLen < getEncodedSize(srcLen, nullTerminate, lineBreakAt)) {
 		return false;
 	}
 
